@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_bloc/feature/cart/ui/cart.dart';
 import 'package:flutter_application_bloc/feature/home/home_bloc_bloc.dart';
+import 'package:flutter_application_bloc/feature/wishlist/ui/wishlist.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Home extends StatefulWidget {
@@ -16,14 +18,28 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBlocBloc, HomeBlocState>(
       bloc: homebloc,
-      // listenWhen: ,
-      // buildWhen: ,
+      listenWhen: (previous, current) => current is HomeActionState,
+      buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is HomeNavigateToCartPageActionState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CartPage(),
+              ));
+        }
+        if (state is HomeNavigateToWishlistPageActionState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Wishlist(),
+              ));
+        }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.teal,
             title: Text('anish grocery app'),
             actions: [
               IconButton(
